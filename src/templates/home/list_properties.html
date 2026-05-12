@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Properties - Real Estate{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="text-center mb-12">
+    <h1 class="text-4xl md:text-5xl font-black text-slate-800 mb-4">
+        Available <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600">Properties</span>
+    </h1>
+    <p class="text-lg text-slate-600">Find your perfect home or investment property</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+    <!-- Filters Sidebar -->
+    <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl shadow-md p-6 sticky top-24">
+            <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-sliders-h text-blue-500"></i>
+                Filters
+            </h2>
+            
+            <form method="get" class="space-y-6">
+                <!-- Property Type -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Property Type</label>
+                    <select name="type" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">All Types</option>
+                        {% for t in types %}
+                            <option value="{{ t }}" {% if filters.type == t %}selected{% endif %}>{{ t|title|cut:"_" }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Status -->
+                <div class="border-t border-slate-200 pt-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Status</label>
+                    <select name="status" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">All Statuses</option>
+                        {% for s in statuses %}
+                            <option value="{{ s }}" {% if filters.status == s %}selected{% endif %}>{{ s|title|cut:"_" }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Location -->
+                <div class="border-t border-slate-200 pt-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Location</label>
+                    <select name="location" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">All Locations</option>
+                        {% for l in locations %}
+                            <option value="{{ l }}" {% if filters.location == l %}selected{% endif %}>{{ l|title|cut:"_" }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Price Range -->
+                <div class="border-t border-slate-200 pt-6">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Price Range</label>
+                    <div class="flex gap-2">
+                        <input type="number" name="min_price" placeholder="Min $" value="{{ filters.min_price|default:'' }}"
+                            class="w-1/2 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="number" name="max_price" placeholder="Max $" value="{{ filters.max_price|default:'' }}"
+                            class="w-1/2 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="border-t border-slate-200 pt-6 space-y-2">
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2.5 px-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition-all">
+                        <i class="fas fa-search mr-2"></i>
+                        Apply Filters
+                    </button>
+                    <a href="{% url 'apps.home:list_properties' %}" class="w-full block text-center bg-slate-100 text-slate-700 py-2.5 px-4 rounded-lg font-semibold hover:bg-slate-200 transition-all">
+                        Reset Filters
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Properties Grid -->
+    <div class="lg:col-span-3">
+        {% if properties %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for property in properties %}
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden hover:-translate-y-1">
+                        <!-- Image -->
+                        <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-5xl">
+                            🏠
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-slate-800 mb-2 line-clamp-2">{{ property.title }}</h2>
+                            
+                            <!-- Status Badge -->
+                            <div class="mb-3 flex items-center gap-2">
+                                {% if property.status == 'for_sale' %}
+                                    <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                        For Sale
+                                    </span>
+                                {% elif property.status == 'for_rent' %}
+                                    <span class="inline-flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        For Rent
+                                    </span>
+                                {% elif property.status == 'sold' %}
+                                    <span class="inline-flex items-center gap-1.5 bg-red-50 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                        <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                        Sold
+                                    </span>
+                                {% elif property.status == 'rented' %}
+                                    <span class="inline-flex items-center gap-1.5 bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                        <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                                        Rented
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                        <span class="w-2 h-2 bg-slate-500 rounded-full"></span>
+                                        {{ property.get_status_display }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Type Badge -->
+                            <span class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm font-semibold mb-3">
+                                {{ property.get_type_display|default:property.type }}
+                            </span>
+                            
+                            <!-- Details -->
+                            <div class="space-y-2 mb-4 text-sm text-slate-600">
+                                <p><strong>Area:</strong> {{ property.area }} m²</p>
+                                <p class="flex items-center gap-1">📍 {{ property.get_location_display|default:property.location }}</p>
+                            </div>
+                            
+                            <!-- Price -->
+                            <div class="text-2xl font-black text-blue-600 mb-4">${{ property.price }}</div>
+                            
+                            <!-- View Button -->
+                            <a href="{% url 'apps.home:property_detail' property.id %}" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2.5 px-4 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition-all hover:-translate-y-0.5 text-center">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-16">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+                    <i class="fas fa-inbox text-slate-400 text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">No properties available</h2>
+                <p class="text-slate-600 mb-6">Check back soon for new listings!</p>
+                <a href="/" class="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition-all">
+                    Back to Home
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

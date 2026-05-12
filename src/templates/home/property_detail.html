@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}{{ property.title }} - Real Estate{% endblock %}
+
+{% block content %}
+<!-- Back Link -->
+<a href="{% url 'apps.home:list_properties' %}" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold mb-8">
+    <i class="fas fa-arrow-left"></i>
+    Back to Properties
+</a>
+
+<!-- Property Detail Container -->
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <!-- Header Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
+        <!-- Image -->
+        <div class="lg:col-span-2">
+            <div class="w-full h-96 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white text-7xl">
+                🏠
+            </div>
+        </div>
+        
+        <!-- Summary -->
+        <div class="flex flex-col justify-between">
+            <div>
+                <h1 class="text-3xl font-black text-slate-800 mb-4">{{ property.title }}</h1>
+                
+                <!-- Status Badge -->
+                <div class="mb-4">
+                    {% if property.status == 'available' %}
+                        <span class="inline-flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full font-semibold text-sm">
+                            <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+                            Available
+                        </span>
+                    {% elif property.status == 'sold' %}
+                        <span class="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm">
+                            <span class="w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+                            Sold
+                        </span>
+                    {% elif property.status == 'pending' %}
+                        <span class="inline-flex items-center gap-2 bg-yellow-50 text-yellow-700 px-4 py-2 rounded-full font-semibold text-sm">
+                            <span class="w-2.5 h-2.5 bg-yellow-500 rounded-full"></span>
+                            Pending
+                        </span>
+                    {% else %}
+                        <span class="inline-flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-full font-semibold text-sm">
+                            <span class="w-2.5 h-2.5 bg-slate-500 rounded-full"></span>
+                            {{ property.get_status_display|default:property.status }}
+                        </span>
+                    {% endif %}
+                </div>
+                
+                <!-- Type Badge -->
+                <span class="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold text-sm mb-6">
+                    {{ property.get_type_display|default:property.type }}
+                </span>
+                
+                <!-- Info Grid -->
+                <div class="space-y-3 mb-6">
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs uppercase text-slate-500 font-bold">Location</div>
+                        <div class="text-lg font-semibold text-slate-800">{{ property.get_location_display|default:property.location }}</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs uppercase text-slate-500 font-bold">Area</div>
+                        <div class="text-lg font-semibold text-slate-800">{{ property.area }} m²</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <div class="text-xs uppercase text-slate-500 font-bold">Coordinates</div>
+                        <div class="text-sm font-semibold text-slate-800">{{ property.latitude }}, {{ property.longitude }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Price -->
+            <div class="border-t-2 border-slate-200 pt-6">
+                <div class="text-sm uppercase text-slate-500 font-bold mb-2">Price</div>
+                <div class="text-4xl font-black text-blue-600">${{ property.price }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Description Section -->
+    <div class="border-t border-slate-200 p-8">
+        <h2 class="text-2xl font-bold text-slate-800 mb-4">About this property</h2>
+        <p class="text-slate-600 text-lg leading-relaxed">{{ property.description }}</p>
+    </div>
+    
+    <!-- Utilities Section -->
+    {% if property.utilities.all %}
+    <div class="border-t border-slate-200 p-8">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Utilities & Amenities</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for utility in property.utilities.all %}
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-blue-500 text-lg"></i>
+                        <span class="font-semibold text-slate-800">{{ utility.utility.name }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Nearby Amenities Section -->
+    {% if property.nearby.all %}
+    <div class="border-t border-slate-200 p-8">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Nearby Places</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for nearby in property.nearby.all %}
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-location-dot text-indigo-500 text-lg"></i>
+                        <span class="font-semibold text-slate-800">{{ nearby.nearby.name }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Images Section -->
+    {% if property.images.all %}
+    <div class="border-t border-slate-200 p-8">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Gallery</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for image in property.images.all %}
+                <img src="{{ image.image.url }}" alt="{{ property.title }}" class="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
