@@ -28,8 +28,23 @@ class PropertyService:
         self.test = None
 
     @classmethod
-    def get_properties(cls):
+    def get_all_properties(cls):
         return Property.objects.all()
+
+    @classmethod
+    def get_filtered_properties(cls, type=None, status=None, location=None, min_price=None, max_price=None):
+        qs = Property.objects.all()
+        if type:
+            qs = qs.filter(type=type)
+        if status:
+            qs = qs.filter(status=status)
+        if location:
+            qs = qs.filter(location=location)
+        if min_price:
+            qs = qs.filter(price__gte=min_price)
+        if max_price:
+            qs = qs.filter(price__lte=max_price)
+        return qs
     
     @classmethod
     def get_property(cls, property_id):
@@ -58,7 +73,7 @@ class PropertyService:
 class PropertyUtilityService:
     
     @classmethod
-    def get_property_utilities(cls, property_id):
+    def get_all_property_utilities(cls, property_id):
         return PropertyUtility.objects.filter(property_id=property_id)
 
     @classmethod
@@ -71,7 +86,7 @@ class PropertyUtilityService:
     
 class PropertyNearbyService:
     @classmethod
-    def get_property_nearbies(cls, property_id):
+    def get_all_property_nearbies(cls, property_id):
         return PropertyNearby.objects.filter(property_id=property_id)
 
     @classmethod

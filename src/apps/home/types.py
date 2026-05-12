@@ -7,6 +7,11 @@ class PropertyType(models.TextChoices):
     commercial_properties = "commercial_properties", "Commercial Properties"
     houses = "houses", "Houses"
     lands = "lands", "Lands"
+    
+    
+    @classmethod
+    def get_all_types(cls):
+        return [choice.value for choice in PropertyType]
 
 
 class PropertyStatus(models.TextChoices):
@@ -14,6 +19,10 @@ class PropertyStatus(models.TextChoices):
     for_rent = "for_rent", "For Rent"
     sold = "sold", "Sold"
     rented = "rented", "Rented"
+    
+    @classmethod
+    def get_all_statuses(cls):
+        return [choice.value for choice in PropertyStatus]
 
 
 class PropertyLocation(models.TextChoices):
@@ -21,11 +30,16 @@ class PropertyLocation(models.TextChoices):
     suburbs = "suburbs", "Suburbs"
     countryside = "countryside", "Countryside"
     outside_city = "outside_city", "Outside City"
+    
+    @classmethod
+    def get_all_locations(cls):
+        return [choice.value for choice in PropertyLocation]
 
 
 class HouseBathroomType(models.TextChoices):
     combined = "combined", "Combined"
     separate = "separate", "Separate"
+    
 
 
 class HouseFurnishingType(models.TextChoices):
