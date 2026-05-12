@@ -1,39 +1,82 @@
-from apps.home.models import Home
+from apps.helper.models import Utility, Nearby
 
+from .models import ( 
+    Property, 
+    PropertyUtility, 
+    PropertyNearby, 
+    PropertyImage,
+    PropertyUtility,
+    PropertyNearby,
+    Lands,
+    Houses
+)
 
-class HomeService:
+from .types import (
+    PropertyType, 
+    PropertyStatus, 
+    PropertyLocation, 
+    
+    HouseBathroomType, 
+    HouseFurnishingType, 
+    HouseHeatingType, 
+    HouseCoolingType, 
+    HouseParkingType
+)
 
-    def __init__(self):
+class PropertyService:
+    def __init__(self, test):
         self.test = None
-        
-        
-    @classmethod
-    def get_all_homes(cls):
-        return Home.objects.all()
-
 
     @classmethod
-    def get_home_by_id(cls, home_id):
-        try:
-            return Home.objects.get(id=home_id)
-        except Home.DoesNotExist:
-            return None
-        
-        
-    @classmethod
-    def create_home(cls, home: Home):
-        home.save()
-        return home
+    def get_properties(cls):
+        return Property.objects.all()
     
     @classmethod
-    def update_home(cls, home: Home, **kwargs):
-        for key, value in kwargs.items():
-            setattr(home, key, value)
-        home.save()
-        return home
+    def get_property(cls, property_id):
+        return Property.objects.get(id=property_id)
     
+    @classmethod
+    def create_property(cls, data):
+        property = Property.objects.create(**data)
+        return property
     
+    @classmethod
+    def update_property(cls, property_id, data):
+        property = Property.objects.get(id=property_id)
+        for key, value in data.items():
+            setattr(property, key, value)
+        property.save()
+        return property
+    
+    @classmethod
+    def delete_property(cls, property_id):
+        property = Property.objects.get(id=property_id)
+        property.delete()
+        return property
+
+
+class PropertyUtilityService:
+    
+    @classmethod
+    def get_property_utilities(cls, property_id):
+        return PropertyUtility.objects.filter(property_id=property_id)
 
     @classmethod
-    def delete_home(cls, home: Home):
-        home.delete()
+    def create_property_utility(cls, property_id, utility_id):
+        property = Property.objects.get(id=property_id)
+        utility = Utility.objects.get(id=utility_id)
+        property_utility = PropertyUtility.objects.create(property=property, utility=utility)
+        return property_utility
+    
+    
+class PropertyNearbyService:
+    @classmethod
+    def get_property_nearbies(cls, property_id):
+        return PropertyNearby.objects.filter(property_id=property_id)
+
+    @classmethod
+    def create_property_nearby(cls, property_id, nearby_id):
+        property = Property.objects.get(id=property_id)
+        nearby = Nearby.objects.get(id=nearby_id)
+        property_nearby = PropertyNearby.objects.create(property=property, nearby=nearby)
+        return property_nearby

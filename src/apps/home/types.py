@@ -1,62 +1,68 @@
-from enum import Enum
 from django.db import models
 
 
-
-class HomeCategory(str, Enum):
-    CO_OP = "co-op"
-    HOUSE_FOR_SALE = "house-for-sale"
-    HOUSE_FOR_RENT = "house-for-rent"
-    CONDO_FOR_SALE = "condo-for-sale"
-    CONDO_FOR_RENT = "condo-for-rent"
-    MULTI_FAMILY_FOR_SALE = "multi-family-for-sale"
-    MULTI_FAMILY_FOR_RENT = "multi-family-for-rent"
-    TOWNHOUSE_FOR_SALE = "townhouse-for-sale"
-    TOWNHOUSE_FOR_RENT = "townhouse-for-rent"
-    PENDING = "pending"
-    CONTINGENT = "contingent"
-    LAND = "land-for-sale"
-    FOR_SALE = "for-sale"
-    FOR_RENT = "for-rent"
-    FORECLOSURE = "foreclosure"
-    CONDOPLEX_FOR_SALE = "condoplex-for-sale"
-    CONDOPLEX_FOR_RENT = "condoplex-for-rent"
-    COMING_SOON = "coming-soon"
-    MOBILE_HOME_FOR_SALE = "mobile-home-for-sale"
-    MOBILE_HOME_FOR_RENT = "mobile-home-for-rent"
-
-    
-    @classmethod
-    def get_list_of_categories(cls):
-        return [category.value for category in HomeCategory]
+class PropertyType(models.TextChoices):
+    daily_rental = "daily_rental", "Daily Rental"
+    apartments = "apartments", "Apartments"
+    commercial_properties = "commercial_properties", "Commercial Properties"
+    houses = "houses", "Houses"
+    lands = "lands", "Lands"
 
 
-class Locality(str, Enum):
-    NEW_YORK = "new-york"
-    LOS_ANGELES = "los-angeles"
-    CHICAGO = "chicago"
-    HOUSTON = "houston"
-    PHOENIX = "phoenix"
-    PHILADELPHIA = "philadelphia"
-    SAN_ANTONIO = "san-antonio"
-    SAN_DIEGO = "san-diego"
-    DALLAS = "dallas"
-    SAN_JOSE = "san-jose"
-
-    
-    @classmethod
-    def get_list_of_localities(cls):
-        return [locality.value for locality in Locality]
+class PropertyStatus(models.TextChoices):
+    for_sale = "for_sale", "For Sale"
+    for_rent = "for_rent", "For Rent"
+    sold = "sold", "Sold"
+    rented = "rented", "Rented"
 
 
-class HomeType(str, Enum):
-    APARTMENT = "apartment"
-    HOUSE = "house"
-    VILLA = "villa"
-    CONDO = "condo"
+class PropertyLocation(models.TextChoices):
+    city_center = "city_center", "City Center"
+    suburbs = "suburbs", "Suburbs"
+    countryside = "countryside", "Countryside"
+    outside_city = "outside_city", "Outside City"
 
 
-    @classmethod
-    def get_list_of_types(cls):
-        return [home_type.value for home_type in HomeType]
+class HouseBathroomType(models.TextChoices):
+    combined = "combined", "Combined"
+    separate = "separate", "Separate"
 
+
+class HouseFurnishingType(models.TextChoices):
+    furnished = "furnished", "Furnished"
+    unfurnished = "unfurnished", "Unfurnished"
+    semi_furnished = "semi_furnished", "Semi-Furnished"
+
+
+class HouseHeatingType(models.TextChoices):
+    central_heating = "central_heating", "Central Heating"
+    individual_heating = "individual_heating", "Individual Heating"
+    no_heating = "no_heating", "No Heating"
+
+
+class HouseCoolingType(models.TextChoices):
+    central_cooling = "central_cooling", "Central Cooling"
+    individual_cooling = "individual_cooling", "Individual Cooling"
+    no_cooling = "no_cooling", "No Cooling"
+
+
+class HouseParkingType(models.TextChoices):
+    garage = "garage", "Garage"
+    driveway = "driveway", "Driveway"
+    street_parking = "street_parking", "Street Parking"
+    no_parking = "no_parking", "No Parking"
+
+
+class BuildingMaterialType(models.TextChoices):
+    brick = "brick", "Brick"
+    concrete = "concrete", "Concrete"
+    wood = "wood", "Wood"
+    steel = "steel", "Steel"
+    other = "other", "Other"
+
+
+class HouseRenovationType(models.TextChoices):
+    renovated = "renovated", "Renovated"
+    needs_renovation = "needs_renovation", "Needs Renovation"
+    recently_renovated = "recently_renovated", "Recently Renovated"
+    no_renovation_needed = "no_renovation_needed", "No Renovation Needed"

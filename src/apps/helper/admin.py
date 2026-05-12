@@ -8,9 +8,8 @@ class UtilityAdmin(admin.ModelAdmin):
     list_display = ("name", "count")
     search_fields = ("name",)
 
+
 @admin.register(Nearby)
 class NearbyAdmin(admin.ModelAdmin):
     list_display = ("name", "count")
     search_fields = ("name",)
-    
-    
