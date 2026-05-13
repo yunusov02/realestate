@@ -7,6 +7,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", landing_page, name="landing_page"),
     path("", include("apps.home.urls")),
+    path("users/", include("apps.users.urls")),
 ]
 
 
