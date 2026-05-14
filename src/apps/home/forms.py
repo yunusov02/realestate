@@ -86,7 +86,12 @@ class PropertyForm(forms.ModelForm):
             self.fields['nearby'].initial = self.instance.nearby.all()
 
     def clean_images(self):
-        return self.files.getlist('images') if self.files else []
+        images = self.files.getlist('images') if self.files else []
+        # Validate each image
+        for image in images:
+            if image.size > 5242880:  # 5MB limit
+                raise forms.ValidationError(f"{image.name} exceeds 5MB limit.")
+        return images
 
     def save(self, commit=True):
         instance = super().save(commit=commit) # Save the property instance first to get an ID for related models
