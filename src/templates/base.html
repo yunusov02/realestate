@@ -30,7 +30,7 @@
             <a href="{% url 'apps.home:list_properties' %}" class="text-slate-600 hover:text-slate-800 font-medium transition-colors">Properties</a>
 
             {% if user.is_authenticated %}
-              <a href="#" class="text-slate-600 hover:text-slate-800 font-medium transition-colors flex items-center gap-1">
+              <a href="{% url 'apps.home:create_property' %}" class="text-slate-600 hover:text-slate-800 font-medium transition-colors flex items-center gap-1">
                 <i class="fas fa-plus-circle"></i>
                 Create Property
               </a>

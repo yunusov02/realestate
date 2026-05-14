@@ -29,11 +29,28 @@ class PropertyService:
 
     @classmethod
     def get_all_properties(cls):
-        return Property.objects.all()
+        return Property.objects.prefetch_related(
+            'utilities__utility',
+            'nearby__nearby',
+            'images'
+        )
 
     @classmethod
-    def get_filtered_properties(cls, type=None, status=None, location=None, min_price=None, max_price=None):
-        qs = Property.objects.all()
+    def get_filtered_properties(
+        cls, 
+        type=None, 
+        status=None, 
+        location=None, 
+        min_price=None, 
+        max_price=None
+    ) -> list[Property]:
+
+        qs = Property.objects.prefetch_related(
+            'utilities__utility',
+            'nearby__nearby',
+            'images'
+        )
+    
         if type:
             qs = qs.filter(type=type)
         if status:
@@ -48,7 +65,11 @@ class PropertyService:
     
     @classmethod
     def get_property(cls, property_id):
-        return Property.objects.get(id=property_id)
+        return Property.objects.prefetch_related(
+            'utilities__utility',
+            'nearby__nearby',
+            'images'
+        ).get(id=property_id)
     
     @classmethod
     def create_property(cls, data):

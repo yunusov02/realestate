@@ -48,6 +48,90 @@
     }
 }
 
+/* Form Styles */
+.form-input {
+    @apply w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white text-slate-800 placeholder-slate-400;
+}
+
+.form-textarea {
+    @apply w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white text-slate-800 placeholder-slate-400 resize-vertical min-h-[120px];
+}
+
+.form-select {
+    @apply w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white text-slate-800;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+}
+
+.form-number {
+    @apply w-full px-4 py-3 pl-8 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white text-slate-800 placeholder-slate-400;
+}
+
+/* Enhanced form animations and interactions */
+.group:hover .form-input,
+.group:hover .form-textarea,
+.group:hover .form-select,
+.group:hover .form-number {
+    border-color: rgb(59 130 246 / 0.5);
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus, .form-number:focus {
+    border-color: rgb(59 130 246);
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+/* Custom scrollbar for textarea */
+.form-textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-textarea::-webkit-scrollbar-track {
+    @apply bg-slate-100 rounded-full;
+}
+
+.form-textarea::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400;
+}
+
+/* Button animations */
+@keyframes pulse-blue {
+    0%, 100% {
+        background-color: rgb(59 130 246);
+    }
+    50% {
+        background-color: rgb(37 99 235);
+    }
+}
+
+button[type="submit"]:active {
+    animation: pulse-blue 0.3s ease-in-out;
+}
+
+/* Section headers animation */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.space-y-8 > div {
+    animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.space-y-8 > div:nth-child(1) { animation-delay: 0.1s; }
+.space-y-8 > div:nth-child(2) { animation-delay: 0.2s; }
+.space-y-8 > div:nth-child(3) { animation-delay: 0.3s; }
+.space-y-8 > div:nth-child(4) { animation-delay: 0.4s; }
+
 .float-animation {
     animation: float 3s ease-in-out infinite;
 }

@@ -68,7 +68,7 @@ class PropertyImage(SoftDelete):
     property = models.ForeignKey(
         Property, related_name="images", on_delete=models.CASCADE
     )
-    image = models.ImageField(upload_to="property_images/")
+    image = models.ImageField(upload_to="images/properties/")
 
     def __str__(self):
         return f"Image for {self.property.title}"

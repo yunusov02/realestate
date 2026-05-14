@@ -1,7 +1,8 @@
 from django.http import HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from apps.home.service import PropertyService
+from apps.home.forms import PropertyForm
 
 from .types import (
     PropertyType, 
@@ -40,3 +41,23 @@ def property_detail(request: HttpRequest, property_id: int):
     property = PropertyService.get_property(property_id)
     
     return render(request, "home/property_detail.html", {"property": property})
+
+
+
+def create_property(request: HttpRequest):
+
+    form = PropertyForm()
+    
+    if request.method == "POST":
+        form = PropertyForm(request.POST, request.FILES)
+        if form.is_valid():
+            property = form.save()
+            return redirect("apps.home:property_detail", property_id=property.id)
+        
+    
+    context = {
+        "form": form,
+    }
+    return render(request, "home/create_property.html", context)
+
+
