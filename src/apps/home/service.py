@@ -70,6 +70,16 @@ class PropertyService:
             'nearby__nearby',
             'images'
         ).get(id=property_id)
+        
+        """
+        select * from car
+        where id = id
+        join care_image on care_image.car_id = car.id
+
+        property = Property.objects.get(id=property_id)
+        property.image
+        """
+        
     
     @classmethod
     def create_property(cls, data):
