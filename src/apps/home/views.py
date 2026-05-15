@@ -40,6 +40,9 @@ def property_detail(request: HttpRequest, property_id: int):
 
     property = PropertyService.get_property(property_id)
     
+    for image in property.images.all():
+        print(image.image.url)
+        
     return render(request, "home/property_detail.html", {"property": property})
 
 

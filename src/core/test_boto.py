@@ -16,6 +16,6 @@ s3 = boto3.client(
     region_name=AWS_S3_REGION_NAME
 )
 
-response = s3.get_bucket_location(Bucket="realestate-bucket-dream-home")
+response = s3.list_objects_v2(Bucket="realestate-bucket-dream-home")
 
 print(response)
