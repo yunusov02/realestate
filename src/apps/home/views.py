@@ -64,3 +64,12 @@ def create_property(request: HttpRequest):
     return render(request, "home/create_property.html", context)
 
 
+
+def delete_property(request: HttpRequest, property_id: int):
+    
+    if request.method != "POST":
+        return redirect("apps.home:property_detail", property_id=property_id)
+    else:
+        PropertyService.delete_property(property_id)
+        return redirect("apps.home:list_properties")
+    
